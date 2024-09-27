@@ -1,0 +1,31 @@
+{
+  "map": "Screenshot 2024-09-24 220256.png",
+  "panoramas": [
+    {
+      "id": 1,
+      "position": { "x": -4.5 , "y": -6 },
+      "source": "IMG_20240924_183459_00_063_PureShot.jpg",
+      "links": [
+        {
+          "destination": 2,
+          "position": { "x": -200, "y": -20, "z": -10 }
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "position": { "x": -2.2 , "y": -9.5 },
+      "source": "Gang2.jpg",
+      "links": [
+        {
+          "destination": 1,
+          "position": { "x": -100, "y": -10, "z": 10 }
+        },
+        {
+          "destination": 2,
+          "position": { "x": 100, "y": -10, "z": -120 }
+        }
+      ]
+    }
+  ]
+}

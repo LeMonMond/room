@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>360° Panorama with Multiple Points</title>
+    <style>
+        body { margin: 0; }
+        #startImageContainer {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: black;
+        }
+        #startImage {
+            max-width: 100%;
+            max-height: 100%;
+        }
+        .bluePoint {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            background-color: blue;
+            border-radius: 50%;
+            cursor: pointer;
+            transform: translate(-50%, -50%);
+        }
+        canvas {
+            display: none;
+        }
+        #loadingSpinner {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            width: 20px;
+            height: 20px;
+            border: 5px solid rgba(255, 255, 255, 0.3);
+            border-top: 5px solid #fff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            transform: translate(-50%, -50%);
+            display: none;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        #dropdownMenu {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            font-size: 16px;
+        }
+        #dropdownMenu select {
+            padding: 10px;
+            border: 1px solid #007BFF;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+<div id="loadingSpinner"></div>
+
+<div id="startImageContainer">
+    <img id="startImage" alt="Start Image">
+</div>
+
+<div id="dropdownMenu">
+    <select id="panoramaSelect">
+        <option value="-1">Select Panorama</option>
+    </select>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+    let renderer, scene, camera, raycaster, mouse;
+    let panoramas = [];
+    let clickableObjects = [];
+
+    // Funktion um die Konfiguration zu laden
+    async function loadConfig() {
+        const response = await fetch('config.json');
+        const config = await response.json();
+
+        // Startbild setzen
+        document.getElementById('startImage').src = config.map;
+
+        // Dropdown-Menü und Panorama-Daten vorbereiten
+        config.panoramas.forEach((panorama, index) => {
+            panoramas.push(panorama);
+
+            const option = document.createElement('option');
+            option.value = index;
+            option.textContent = `Panorama ${panorama.id}`;
+            document.getElementById('panoramaSelect').appendChild(option);
+
+            // Blaue Punkte hinzufügen
+            const bluePoint = document.createElement('div');
+            bluePoint.classList.add('bluePoint');
+            bluePoint.style.top = `calc(${50 + panorama.position.y}% + 50px)`;
+            bluePoint.style.left = `calc(${50 + panorama.position.x}% + 50px)`;
+            bluePoint.addEventListener('click', () => initPanorama(index));
+            document.getElementById('startImageContainer').appendChild(bluePoint);
+        });
+    }
+
+    // Funktion um zum Startbild zurückzukehren
+    function returnToStart() {
+        document.getElementById('startImageContainer').style.display = 'flex';
+        if (renderer) {
+            document.body.removeChild(renderer.domElement);
+        }
+        document.getElementById('dropdownMenu').style.display = 'block';
+        document.getElementById('panoramaSelect').value = '-1';
+    }
+
+    // Funktion um das Panorama zu initialisieren
+
+
+
+
+
+    function initPanorama(index) {
+        // Clear previous canvas
+        const canvases = document.querySelectorAll('canvas');
+        canvases.forEach(canvas => {
+            canvas.remove();
+        });
+
+        if (renderer) {
+            renderer.dispose();
+        }
+
+        document.getElementById('startImageContainer').style.display = 'none';
+        document.getElementById('loadingSpinner').style.display = 'block';
+
+        document.getElementById('panoramaSelect').value = index;
+
+        const panorama = panoramas[index];
+
+        scene = new THREE.Scene();
+        camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        renderer = new THREE.WebGLRenderer({ antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.body.appendChild(renderer.domElement);
+        renderer.domElement.style.display = 'block';
+
+        raycaster = new THREE.Raycaster();
+        mouse = new THREE.Vector2();
+
+        const textureLoader = new THREE.TextureLoader();
+        const texture = textureLoader.load(
+            panorama.source,
+            () => {
+                animate();
+                document.getElementById('loadingSpinner').style.display = 'none';
+            },
+            undefined,
+            (err) => {
+                console.error('Error loading texture:', err);
+                document.getElementById('loadingSpinner').style.display = 'none';
+                returnToStart();
+            }
+        );
+
+        const geometry = new THREE.SphereGeometry(1000, 60, 40);
+        geometry.scale(-1, 1, 1);
+
+        const material = new THREE.MeshBasicMaterial({ map: texture });
+        const sphere = new THREE.Mesh(geometry, material);
+        scene.add(sphere);
+
+        // Links aus der Konfiguration zu diesem Panorama hinzufügen
+        addBluePoints(panorama.links);
+
+        let isDragging = false;
+        let yaw = 0;
+        let pitch = 0;
+        let lastMouseX = 0;
+        let lastMouseY = 0;
+
+        document.addEventListener('mousedown', function(event) {
+            if (event.button === 0) {
+                isDragging = true;
+                lastMouseX = event.clientX;
+                lastMouseY = event.clientY;
+            }
+        });
+
+        document.addEventListener('mouseup', function(event) {
+            if (event.button === 0) {
+                isDragging = false;
+            }
+        });
+
+        document.addEventListener('mousemove', function(event) {
+            if (isDragging) {
+                const deltaMove = {
+                    x: event.clientX - lastMouseX,
+                    y: event.clientY - lastMouseY
+                };
+
+                lastMouseX = event.clientX;
+                lastMouseY = event.clientY;
+
+                const rotationSpeed = 0.0008;
+
+                yaw += deltaMove.x * rotationSpeed;
+                pitch += deltaMove.y * rotationSpeed;
+
+                pitch = Math.max(-Math.PI / 2, Math.min(Math.PI / 2, pitch));
+
+                const quaternion = new THREE.Quaternion();
+                const euler = new THREE.Euler(pitch, yaw, 0, 'YXZ');
+                quaternion.setFromEuler(euler);
+
+                camera.quaternion.copy(quaternion);
+            }
+        });
+
+        document.addEventListener('click', onDocumentMouseClick, false);
+
+        camera.position.set(0, 0, 0);
+
+        function animate() {
+            requestAnimationFrame(animate);
+            renderer.render(scene, camera);
+        }
+
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+    }
+
+    // Blaue Punkte aus der Konfiguration hinzufügen
+    function addBluePoints(links) {
+        links.forEach(link => {
+            const sphereGeometry = new THREE.SphereGeometry(5, 32, 32);
+            const sphereMaterial = new THREE.MeshBasicMaterial({ color: 0x0000ff });
+            const smallSphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
+            smallSphere.position.set(link.position.x, link.position.y, link.position.z);
+            scene.add(smallSphere);
+            clickableObjects.push(smallSphere);
+
+            // Zielpanorama speichern
+            smallSphere.userData.destination = link.destination;
+        });
+    }
+
+    function onDocumentMouseClick(event) {
+        event.preventDefault();
+
+        // Berechne Mausposition in Normalized Device Coordinates (NDC)
+        mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+        mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+        raycaster.setFromCamera(mouse, camera);
+
+        // Schaue nach Schnittpunkten mit klickbaren Objekten
+        const intersects = raycaster.intersectObjects(clickableObjects);
+
+        if (intersects.length > 0) {
+            const destinationIndex = panoramas.findIndex(p => p.id === intersects[0].object.userData.destination);
+            if (destinationIndex !== -1) {
+                initPanorama(destinationIndex);
+            } else {
+                console.error(`Panorama mit ID ${intersects[0].object.userData.destination} nicht gefunden`);
+            }
+        }
+    }
+
+    // Dropdown-Menü Event-Listener
+    document.getElementById('panoramaSelect').addEventListener('change', function() {
+        const selectedIndex = parseInt(this.value);
+        if (selectedIndex === -1) {
+            returnToStart();
+        } else {
+            initPanorama(selectedIndex);
+        }
+    });
+
+    // Lade die Konfiguration beim Start der Seite
+    loadConfig();
+</script>
+
+</body>
+</html>
