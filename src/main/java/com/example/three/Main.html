@@ -72,7 +72,7 @@
 
 <div id="dropdownMenu">
     <select id="panoramaSelect">
-        <option value="-1">Select Panorama</option>
+        <option value="-1">Übersicht</option>
     </select>
 </div>
 
@@ -96,7 +96,7 @@
 
             const option = document.createElement('option');
             option.value = index;
-            option.textContent = `Panorama ${panorama.id}`;
+            option.textContent = panorama.name;
             document.getElementById('panoramaSelect').appendChild(option);
 
             // Blaue Punkte hinzufügen
@@ -124,6 +124,7 @@
 
 
 
+    var sphere;
 
     function initPanorama(index) {
         // Clear previous canvas
@@ -172,7 +173,7 @@
         geometry.scale(-1, 1, 1);
 
         const material = new THREE.MeshBasicMaterial({ map: texture });
-        const sphere = new THREE.Mesh(geometry, material);
+        sphere = new THREE.Mesh(geometry, material);
         scene.add(sphere);
 
         // Links aus der Konfiguration zu diesem Panorama hinzufügen
@@ -288,6 +289,60 @@
 
     // Lade die Konfiguration beim Start der Seite
     loadConfig();
+
+
+
+/*
+function showSphereCoordinates(event) {
+    // Überprüfen Sie, ob die rechte Maustaste gedrückt wurde (event.button === 2)
+    if (event.button !== 2) return; // Beenden, wenn es nicht der rechte Mausknopf ist
+
+    event.preventDefault(); // Verhindert das Standardkontextmenü
+
+    // Berechne Mausposition in Normalized Device Coordinates (NDC)
+    const mouse = new THREE.Vector2();
+    mouse.x = (event.clientX / window.innerWidth) * 2 - 1; // Normalisierte X-Position
+    mouse.y = -(event.clientY / window.innerHeight) * 2 + 1; // Normalisierte Y-Position
+
+    // Setze die Raycaster von der Kamera aus
+    raycaster.setFromCamera(mouse, camera);
+
+    // Überprüfe, ob wir die Kugel getroffen haben
+    const intersects = raycaster.intersectObject(sphere);
+
+    if (intersects.length > 0) {
+        // Wenn die Kugel geklickt wurde, zeige die Koordinaten an
+        const position = intersects[0].point; // Koordinaten des Schnittpunkts
+        alert(`"x": ${(Math.round(position.x) / 5).toFixed(2)}, "y": ${(Math.round(position.y) / 5).toFixed(2)}, "z": ${(Math.round(position.z) / 5).toFixed(2)}`);
+
+    }
+}
+
+// Event-Listener für das Rechtsklicken hinzufügen
+document.addEventListener('contextmenu', showSphereCoordinates);
+
+*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 </script>
 
 </body>

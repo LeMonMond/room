@@ -1,29 +1,207 @@
 {
-  "map": "Screenshot 2024-09-24 220256.png",
+  "map": "picture/Übersicht.png",
   "panoramas": [
     {
       "id": 1,
-      "position": { "x": -4.5 , "y": -6 },
-      "source": "IMG_20240924_183459_00_063_PureShot.jpg",
+      "name": "Wohnen",
+      "position": { "x": 1 , "y": -5 },
+      "source": "picture/Wohnen.jpg",
       "links": [
         {
-          "destination": 2,
-          "position": { "x": -200, "y": -20, "z": -10 }
+          "destination": 13,
+          "position": {"x": -87.60, "y": -11.40, "z": 179.00}
+        },
+        {
+          "destination": 10,
+          "position": { "x": -35.20, "y": -12.40, "z": 196.20 }
+        },
+        {
+          "destination": 8,
+          "position": {"x": -29.60, "y": 6.80, "z": -197.20}
+        },
+        {
+          "destination": 5,
+          "position": {"x": 106.80, "y": -14.40, "z": -168.20}
+        },
+        {
+          "destination": 11,
+          "position": {"x": 190.80, "y": -14.80, "z": -57.20}
+        },
+        {
+          "destination": 7,
+          "position": {"x": 198.00, "y": -21.40, "z": 11.80}
+        },
+        {
+          "destination": 12,
+          "position": {"x": 188.80, "y": -24.20, "z": 60.80}
         }
       ]
     },
     {
       "id": 2,
-      "position": { "x": -2.2 , "y": -9.5 },
-      "source": "Gang2.jpg",
+      "name": "Balkon rechts",
+      "position": { "x": -15 , "y": 12 },
+      "source": "picture/BalkonAussen.jpg",
+      "links": [
+        {
+          "destination": 4,
+          "position": {"x": 68.20, "y": -9.80, "z": 187.40}
+        },
+        {
+          "destination": 13,
+          "position": {"x": 134.40, "y": -14.00, "z": 147.20}
+        },
+        {
+          "destination": 1,
+          "position": {"x": 199.20, "y": -13.20, "z": 4.60}
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "name": "Balkon klein",
+      "position": { "x": 12 , "y": -38 },
+      "source": "picture/BalkonKlein.jpg",
+      "links": [
+        {
+          "destination": 7,
+          "position": {"x": 193.20, "y": -11.60, "z": 49.00}
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "name": "Balkon mitte",
+      "position": { "x": 1 , "y": 20 },
+      "source": "picture/BalkonMitte.jpg",
       "links": [
         {
           "destination": 1,
-          "position": { "x": -100, "y": -10, "z": 10 }
+          "position": {"x": 197.80, "y": -16.60, "z": -23.60}
         },
         {
           "destination": 2,
           "position": { "x": 100, "y": -10, "z": -120 }
+        },
+        {
+          "destination": 13,
+          "position": {"x": 122.00, "y": -21.60, "z": 156.40}
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "name": "Schlafzimmer",
+      "position": { "x": -10 , "y": -28 },
+      "source": "picture/Bedroom.jpg",
+      "links": [
+        {
+          "destination": 1,
+          "position": {"x": -198.00, "y": -4.00, "z": -26.00}
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "name": "Schlafzimmer 2",
+      "position": { "x": 11 , "y": -28 },
+      "source": "picture/BedroomKlein.jpg",
+      "links": [
+        {
+          "destination": 1,
+          "position": {"x": -193.20, "y": -7.40, "z": 49.80}
+        },
+        {
+          "destination": 3,
+          "position": {"x": 156.80, "y": -9.80, "z": -123.20}
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "name": "Wohnbereich 2",
+      "position": { "x": -13.5 , "y": -13 },
+      "source": "picture/kuche+wohnbereich.jpg",
+      "links": [
+        {
+          "destination": 1,
+          "position": {"x": -131.20, "y": -11.20, "z": 150.20}
+        },
+        {
+          "destination": 9,
+          "position": {"x": -172.60, "y": -4.40, "z": -100.60}
+        }
+      ]
+    },
+    {
+      "id": 9,
+      "name": "Küche",
+      "position": { "x": -13.5 , "y": -2 },
+      "source": "picture/Küche.jpg",
+      "links": [
+        {
+          "destination": 8,
+          "position": {"x": 198.20, "y": -19.00, "z": -14.40}
+        }
+      ]
+    },
+    {
+      "id": 10,
+      "name": "Waschraum",
+      "position": { "x": 10 , "y": 4.5 },
+      "source": "picture/Waschmaschine.jpg",
+      "links": [
+        {
+          "destination": 1,
+          "position": {"x": 186.00, "y": -19.00, "z": -69.80}
+        }
+      ]
+    },
+    {
+      "id": 11,
+      "name": "Badezimmer",
+      "position": { "x": 2 , "y": -28 },
+      "source": "picture/WcGross.jpg",
+      "links": [
+        {
+          "destination": 1,
+          "position": {"x": 198.40, "y": -18.00, "z": -14.00}
+        }
+      ]
+    },
+    {
+      "id": 12,
+      "name": "Gäste WC",
+      "position": { "x": 7 , "y": -18 },
+      "source": "picture/Wcklein.jpg",
+      "links": [
+        {
+          "destination": 1,
+          "position": {"x": 88.40, "y": -7.00, "z": -178.80}
+        },
+        {
+          "destination": 7,
+          "position": {"x": -7.20, "y": -19.80, "z": 198.60}
+        }
+      ]
+    },
+    {
+      "id": 13,
+      "name": "Wintergarten",
+      "position": { "x": 13 , "y": 16 },
+      "source": "picture/Wintergarten.jpg",
+      "links": [
+        {
+          "destination": 4,
+          "position": { "x": -178.80, "y": 7.20, "z": -88.40 }
+        },
+        {
+          "destination": 2,
+          "position": { "x": -126.20, "y": 1.00, "z": -154.80}
+        },
+        {
+          "destination": 1,
+          "position": { "x": -7.00, "y": -10.60, "z": -199.20}
         }
       ]
     }
