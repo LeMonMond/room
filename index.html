@@ -21,13 +21,22 @@
         }
         .bluePoint {
             position: absolute;
-            width: 40px;
+            width: 40px; /* Größe der blauen Punkte */
             height: 40px;
             background-color: blue;
             border-radius: 50%;
             cursor: pointer;
-            transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%); /* Zentriert die Punkte */
+            z-index: 10; /* Stellt sicher, dass die Punkte über anderen Inhalten liegen */
         }
+
+        @media (max-width: 768px) {
+            .bluePoint {
+            width: 30px; /* Kleinere Punkte auf mobilen Geräten */
+            height: 30px;
+            }
+        }
+
         canvas {
             display: none;
         }
@@ -100,12 +109,26 @@
             document.getElementById('panoramaSelect').appendChild(option);
 
             // Blaue Punkte hinzufügen
-            const bluePoint = document.createElement('div');
-            bluePoint.classList.add('bluePoint');
-            bluePoint.style.top = `calc(${50 + panorama.position.y}% + 50px)`;
-            bluePoint.style.left = `calc(${50 + panorama.position.x}% + 50px)`;
-            bluePoint.addEventListener('click', () => initPanorama(index));
-            document.getElementById('startImageContainer').appendChild(bluePoint);
+        const bluePoint = document.createElement('div');
+        bluePoint.classList.add('bluePoint');
+
+        // Berechnung der Position der blauen Punkte auf dem Bildschirm
+        const topPosition = 50 + panorama.position.y; // y-Position des Punktes
+        const leftPosition = 50 + panorama.position.x; // x-Position des Punktes
+
+        // Style für mobile Geräte anpassen
+        if (window.innerWidth < 768) { // Beispiel: Wenn der Bildschirm kleiner als 768px ist
+            bluePoint.style.top = `calc(${topPosition}% + 50px)`;
+            bluePoint.style.left = `calc(${leftPosition}% + 50px)`;
+        } else {
+            // Desktop-Stil
+            bluePoint.style.top = `calc(${topPosition}% + 50px)`;
+            bluePoint.style.left = `calc(${leftPosition}% + 50px)`;
+        }
+
+        bluePoint.addEventListener('click', () => initPanorama(index));
+        document.getElementById('startImageContainer').appendChild(bluePoint);
+
         });
     }
 
@@ -315,7 +338,7 @@
             touchStartX = event.touches[0].clientX;
             touchStartY = event.touches[0].clientY;
 
-            const rotationSpeed = 0.0008;
+            const rotationSpeed = 0.005;
 
             yaw += deltaX * rotationSpeed;
             pitch += deltaY * rotationSpeed;
