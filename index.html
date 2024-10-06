@@ -69,6 +69,7 @@
             border-radius: 5px;
             cursor: pointer;
         }
+
     </style>
 </head>
 <body>
@@ -95,15 +96,45 @@
     let isTouching = false;
     let touchStartX = 0, touchStartY = 0;
 
-    // Funktion um die Konfiguration zu laden
+    let imageElement = document.getElementById('startImage');
+
+    function setPointPosition(bluePoint, topPosition, leftPosition) {
+                const imageRect = imageElement.getBoundingClientRect();
+                const imageTop = imageRect.top;
+                const imageLeft = imageRect.left;
+                const imageWidth = imageRect.width;
+                const imageHeight = imageRect.height;
+
+                //console.log('Bildabmessungen:', imageRect);
+
+                const pointSize = Math.min(imageWidth, imageHeight) * 0.05; // 5% der kleineren Bilddimension
+
+                // Setze die Größe des blauen Punktes
+                bluePoint.style.width = `${pointSize}px`;
+                bluePoint.style.height = `${pointSize}px`;
+
+                if (window.innerWidth < 768) {
+                    bluePoint.style.top = `${imageTop + (topPosition / 100) * imageHeight}px`;
+                    bluePoint.style.left = `${imageLeft + (leftPosition / 100) * imageWidth}px`;
+                } else {
+                    bluePoint.style.top = `${imageTop + (topPosition / 100) * imageHeight}px`;
+                    bluePoint.style.left = `${imageLeft + (leftPosition / 100) * imageWidth}px`;
+                }
+
+
+
+    }
+
     async function loadConfig() {
         const response = await fetch('config.json');
         const config = await response.json();
 
-        // Startbild setzen
-        document.getElementById('startImage').src = config.map;
+        imageElement.src = config.map;
 
-        // Dropdown-Menü und Panorama-Daten vorbereiten
+
+        imageElement.onload = function() {
+
+
         config.panoramas.forEach((panorama, index) => {
             panoramas.push(panorama);
 
@@ -112,28 +143,33 @@
             option.textContent = panorama.name;
             document.getElementById('panoramaSelect').appendChild(option);
 
-            // Blaue Punkte hinzufügen
-        const bluePoint = document.createElement('div');
-        bluePoint.classList.add('bluePoint');
 
-        // Berechnung der Position der blauen Punkte auf dem Bildschirm
-        const topPosition = 50 + panorama.position.y; // y-Position des Punktes
-        const leftPosition = 50 + panorama.position.x; // x-Position des Punktes
 
-        // Style für mobile Geräte anpassen
-        if (window.innerWidth < 768) { // Beispiel: Wenn der Bildschirm kleiner als 768px ist
-            bluePoint.style.top = `calc(${topPosition}% + 50px)`;
-            bluePoint.style.left = `calc(${leftPosition}% + 50px)`;
-        } else {
-            // Desktop-Stil
-            bluePoint.style.top = `calc(${topPosition}% + 50px)`;
-            bluePoint.style.left = `calc(${leftPosition}% + 50px)`;
+            const imageElement = document.getElementById('startImage');
+
+
+            const bluePoint = document.createElement('div');
+            bluePoint.classList.add('bluePoint');
+            document.body.appendChild(bluePoint);
+
+
+            const topPosition = 50 + panorama.position.y;
+            const leftPosition = 50 + panorama.position.x;
+
+            setPointPosition(bluePoint, topPosition, leftPosition);
+
+            document.getElementById('startImageContainer').appendChild(bluePoint);
+
+
+            window.addEventListener('resize', () => {
+                setPointPosition(bluePoint, topPosition, leftPosition)
+            });
+            bluePoint.addEventListener('click', () => initPanorama(index));
+
+
+
+            });
         }
-
-        bluePoint.addEventListener('click', () => initPanorama(index));
-        document.getElementById('startImageContainer').appendChild(bluePoint);
-
-        });
     }
 
     // Funktion um zum Startbild zurückzukehren
@@ -401,6 +437,7 @@ function showSphereCoordinates(event) {
 document.addEventListener('contextmenu', showSphereCoordinates);
 
 */
+
 
 
 

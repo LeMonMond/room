@@ -40,7 +40,7 @@
     {
       "id": 2,
       "name": "Balkon rechts",
-      "position": { "x": -15 , "y": 12 },
+      "position": { "x": -23 , "y": 19 },
       "source": "picture/BalkonAussen.jpg",
       "links": [
         {
@@ -60,7 +60,7 @@
     {
       "id": 3,
       "name": "Balkon klein",
-      "position": { "x": 12 , "y": -38 },
+      "position": { "x": 35 , "y": -42 },
       "source": "picture/BalkonKlein.jpg",
       "links": [
         {
@@ -72,7 +72,7 @@
     {
       "id": 4,
       "name": "Balkon mitte",
-      "position": { "x": 1 , "y": 20 },
+      "position": { "x": 8 , "y": 30 },
       "source": "picture/BalkonMitte.jpg",
       "links": [
         {
@@ -92,7 +92,7 @@
     {
       "id": 5,
       "name": "Schlafzimmer",
-      "position": { "x": -10 , "y": -28 },
+      "position": { "x": -15 , "y": -28 },
       "source": "picture/Bedroom.jpg",
       "links": [
         {
@@ -104,7 +104,7 @@
     {
       "id": 7,
       "name": "Schlafzimmer 2",
-      "position": { "x": 11 , "y": -28 },
+      "position": { "x": 30 , "y": -28 },
       "source": "picture/BedroomKlein.jpg",
       "links": [
         {
@@ -120,7 +120,7 @@
     {
       "id": 8,
       "name": "Wohnbereich 2",
-      "position": { "x": -13.5 , "y": -13 },
+      "position": { "x": -23 , "y": -12 },
       "source": "picture/kuche+wohnbereich.jpg",
       "links": [
         {
@@ -136,7 +136,7 @@
     {
       "id": 9,
       "name": "Küche",
-      "position": { "x": -13.5 , "y": -2 },
+      "position": { "x": -23 , "y": 2 },
       "source": "picture/Küche.jpg",
       "links": [
         {
@@ -148,7 +148,7 @@
     {
       "id": 10,
       "name": "Waschraum",
-      "position": { "x": 10 , "y": 4.5 },
+      "position": { "x": 27 , "y": 10 },
       "source": "picture/Waschmaschine.jpg",
       "links": [
         {
@@ -160,7 +160,7 @@
     {
       "id": 11,
       "name": "Badezimmer",
-      "position": { "x": 2 , "y": -28 },
+      "position": { "x": 10 , "y": -28 },
       "source": "picture/WcGross.jpg",
       "links": [
         {
@@ -172,7 +172,7 @@
     {
       "id": 12,
       "name": "Gäste WC",
-      "position": { "x": 7 , "y": -18 },
+      "position": { "x": 23 , "y": -17 },
       "source": "picture/Wcklein-1.jpg",
       "links": [
         {
@@ -188,7 +188,7 @@
     {
       "id": 13,
       "name": "Wintergarten",
-      "position": { "x": 13 , "y": 16 },
+      "position": { "x": 35 , "y": 24 },
       "source": "picture/Wintergarten.jpg",
       "links": [
         {
