@@ -90,6 +90,10 @@
     let renderer, scene, camera, raycaster, mouse;
     let panoramas = [];
     let clickableObjects = [];
+    let yawFinger = 0;
+    let pitchFinger = 0;
+    let isTouching = false;
+    let touchStartX = 0, touchStartY = 0;
 
     // Funktion um die Konfiguration zu laden
     async function loadConfig() {
@@ -173,6 +177,11 @@
         renderer.setSize(window.innerWidth, window.innerHeight);
         document.body.appendChild(renderer.domElement);
         renderer.domElement.style.display = 'block';
+
+        yawFinger = 0;
+        pitchFinger = 0;
+        isTouching = false;
+        touchStartX = 0, touchStartY = 0;
 
         raycaster = new THREE.Raycaster();
         mouse = new THREE.Vector2();
@@ -314,10 +323,6 @@
     loadConfig();
 
 
-    let yaw = 0;
-    let pitch = 0;
-    let isTouching = false;
-    let touchStartX = 0, touchStartY = 0;
 
     // Touch-Start-Handler (Finger berührt den Bildschirm)
     function onTouchStart(event) {
@@ -340,13 +345,13 @@
 
             const rotationSpeed = 0.005;
 
-            yaw += deltaX * rotationSpeed;
-            pitch += deltaY * rotationSpeed;
+            yawFinger += deltaX * rotationSpeed;
+            pitchFinger += deltaY * rotationSpeed;
 
-            pitch = Math.max(-Math.PI / 2, Math.min(Math.PI / 2, pitch)); // Begrenzung des Neigungswinkels
+            pitchFinger = Math.max(-Math.PI / 2, Math.min(Math.PI / 2, pitchFinger)); // Begrenzung des Neigungswinkels
 
             const quaternion = new THREE.Quaternion();
-            const euler = new THREE.Euler(pitch, yaw, 0, 'YXZ');
+            const euler = new THREE.Euler(pitchFinger, yawFinger, 0, 'YXZ');
             quaternion.setFromEuler(euler);
 
             camera.quaternion.copy(quaternion); // Kamera-Ausrichtung aktualisieren
