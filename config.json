@@ -173,7 +173,7 @@
       "id": 12,
       "name": "Gäste WC",
       "position": { "x": 7 , "y": -18 },
-      "source": "picture/Wcklein.jpg",
+      "source": "picture/Wcklein-1.jpg",
       "links": [
         {
           "destination": 1,
